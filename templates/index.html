@@ -6,7 +6,14 @@
 </head>
 <body>
 	<form action="/" method="post">
-		<input type="text" name="url">
+		<div>
+			<span>Your URL: </span>
+			<input type="text" name="url">
+		</div>
+		<div>
+			<span>Custom Short Link: </span>
+			<input type="text" name="new-url">
+		</div>
 	</form>
 	{{ path }}
 </body>
