@@ -1,5 +1,5 @@
 # shorten-url
-<img src="https://img.shields.io/badge/status-stable-red"></img>
+<img src="https://img.shields.io/badge/status-stable-"></img>
 ## setup
 1. Create a folder named `s` in the parent directory of app.py.
 ```sh
