@@ -1,33 +1,28 @@
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from os import system
+from os import system, popen
 
 app = Flask(__name__)
 CORS(app)
 
-with open(r'.num.txt') as num_file:
-    read = num_file.read()
-    num = int(read)
-
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    global num
-    num = num + 1
     if request.method == 'GET':
         return render_template('index.html', path = '')
     if request.method == 'POST':
         url = request.form.get('url')
-        with open(r'.num.txt', 'w') as write:
-            write.write(str(num))
+        new_url = request.form.get('new_url')
+        if new_url in popen("ls ../s").read().split('\n'):
+            return 'this url has been occurpied...<a href="/">back home</a>'
 
-        system('touch ' + str(num) + '.html')
+        system('touch ' + new_url)
 
         model = open('model.html').read()
         model = model.replace('url', url)
-        command = 'echo \'%s\' > %s'%(model, str(num))
+        command = 'echo \'%s\' > %s'%(model, new_url)
         system(command)
 
-        return render_template('index.html', path = 'https://cnmc.tw/s/' + str(num))
+        return render_template('index.html', path = 'https://cnmc.tw/s/' + new_url)
 
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 8080, debug = True)
