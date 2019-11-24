@@ -11,15 +11,13 @@ def index():
         return render_template('index.html', path = '')
     if request.method == 'POST':
         url = request.form.get('url')
-        new_url = request.form.get('new_url')
+        new_url = request.form.get('new-url')
         if new_url in popen("ls ../s").read().split('\n'):
             return 'this url has been occurpied...<a href="/">back home</a>'
 
-        system('touch ' + new_url)
-
         model = open('model.html').read()
         model = model.replace('url', url)
-        command = 'echo \'%s\' > %s'%(model, new_url)
+        command = 'touch ../s/' + new_url + '&& echo \'%s\' > ../s/%s'%(model, new_url)
         system(command)
 
         return render_template('index.html', path = 'https://cnmc.tw/s/' + new_url)
