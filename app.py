@@ -1,9 +1,18 @@
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from os import system, popen
+from form import trans
+from flask_wtf import RecaptchaField, Form
+
 
 app = Flask(__name__)
 CORS(app)
+
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6LdTFsUUAAAAAATO4ICHeRhknaXNNQEqOMqwejsz'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LdTFsUUAAAAANEw_EpSUi5MQ539a5kL_ffKs07m'
+app.config['SECRET_KEY'] = 'youdontknow'
+app.config['RECAPTCHA_USE_SSL'] = False
+app.config['RECAPTCHA_OPTIONS'] = {'theme':'black'}
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
