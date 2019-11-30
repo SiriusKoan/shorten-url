@@ -16,6 +16,8 @@ app.config.update(dict(
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
 
+allow = []
+
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     if request.method == 'GET':
@@ -32,7 +34,7 @@ def index():
             command = 'touch ../s/' + new_url + '&& echo \'%s\' > ../s/%s'%(model, new_url)
             system(command)
 
-            return render_template('index.html', path = 'https://cnmc.tw/s/' + new_url)
+            return 'https://cnmc.tw/s/' + new_url
         else:
             return '<h1 style="color: red;">please verify</h1><br><a href="/">back home</a>'
 
