@@ -7,10 +7,12 @@ from flask_recaptcha import ReCaptcha
 app = Flask(__name__)
 CORS(app)
 
+public_key = "6Lc7UMUUAAAAAEVWlNxm5SNF7kaiixUZAVBoyNVc"
+private_key = "6Lc7UMUUAAAAALl0APCC9dCjzKKOz0Cgys1K91q1"
 app.config.update(dict(
     RECAPTCHA_ENABLED = True,
-    RECAPTCHA_SITE_KEY = "6Lc7UMUUAAAAAEVWlNxm5SNF7kaiixUZAVBoyNVc",
-    RECAPTCHA_SECRET_KEY = "6Lc7UMUUAAAAALl0APCC9dCjzKKOz0Cgys1K91q1",
+    RECAPTCHA_SITE_KEY = public_key,
+    RECAPTCHA_SECRET_KEY = private_key,
 ))
 
 recaptcha = ReCaptcha()
@@ -27,6 +29,8 @@ def index():
             if new_url in popen("ls ../s").read().split('\n'):
                 return 'this url has been occurpied...<a href="/">back home</a>'
 
+            
+
             model = open('model.html').read()
             model = model.replace('url', url)
             command = 'touch ../s/' + new_url + '&& echo \'%s\' > ../s/%s'%(model, new_url)
@@ -34,6 +38,7 @@ def index():
 
             return render_template('index.html', path = 'https://cnmc.tw/s/' + new_url)
         else:
+            ###################print(request.path)
             return '<h1 style="color: red;">please verify</h1><br><a href="/">back home</a>'
 
 if __name__ == '__main__':
