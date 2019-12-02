@@ -16,6 +16,8 @@ app.config.update(dict(
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
 
+num = [str(i) for i in range(10)]
+alpha = 
 allow = []
 
 @app.route('/', methods = ['GET', 'POST'])
