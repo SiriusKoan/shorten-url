@@ -17,8 +17,8 @@ recaptcha = ReCaptcha()
 recaptcha.init_app(app)
 
 num = [str(i) for i in range(10)]
-alpha = 
-allow = []
+alpha = [chr(i) for i in range(65, 91)] + [chr(i) for i in range(97, 123)]
+allow = num + alpha + ["_", "-", "\"]
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
@@ -28,6 +28,10 @@ def index():
         if recaptcha.verify():
             url = request.form.get('url')
             new_url = request.form.get('new-url')
+            for s in list(new_url):
+                if s not in allow:
+                       return "You use not allowed character..."
+                       
             if new_url in popen("ls ../s").read().split('\n'):
                 return 'this url has been occurpied...<a href="/">back home</a>'
 
