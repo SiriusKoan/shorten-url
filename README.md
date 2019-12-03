@@ -1,11 +1,10 @@
 # shorten-url
 <img src="https://img.shields.io/badge/status-security problem-red"></img>
 ## setup
-1. Create a folder named `s` in the parent directory of app.py.
+1. Create a database named short.db.
 ```sh
-$ sudo mkdir ../s
+$ sudo sqlite3 short.db < schema.sql
 ```
-2. Edit the port and IP address in app.py.
 ## deploy
 Run app.py. You can modify the port and IP address.
 ```sh

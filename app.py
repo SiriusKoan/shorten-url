@@ -18,6 +18,10 @@ app.config.update(dict(
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
 
+num = [str(i) for i in range(10)]
+alpha = [chr(i) for i in range(65, 91)] + [chr(i) for i in range(97, 123)]
+allow = num + alpha + ["_", "-", "\"]
+
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     if request.method == 'GET':
@@ -26,6 +30,10 @@ def index():
         if recaptcha.verify():
             url = request.form.get('url')
             new_url = request.form.get('new-url')
+            for s in list(new_url):
+                if s not in allow:
+                       return "You use not allowed character..."
+                       
             if new_url in popen("ls ../s").read().split('\n'):
                 return 'this url has been occurpied...<a href="/">back home</a>'
 
@@ -36,7 +44,7 @@ def index():
             command = 'touch ../s/' + new_url + '&& echo \'%s\' > ../s/%s'%(model, new_url)
             system(command)
 
-            return render_template('index.html', path = 'https://cnmc.tw/s/' + new_url)
+            return 'https://cnmc.tw/s/' + new_url
         else:
             ###################print(request.path)
             return '<h1 style="color: red;">please verify</h1><br><a href="/">back home</a>'
