@@ -1,3 +1,4 @@
 .vscode/*
 .num.txt
 short.db
+__pycache__
