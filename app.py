@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 from os import system, popen
 from flask_recaptcha import ReCaptcha
+from models import *
 
 
 app = Flask(__name__)
@@ -33,11 +34,8 @@ def index():
             for s in list(new_url):
                 if s not in allow:
                        return "You use not allowed character..."
-                       
-            if new_url in popen("ls ../s").read().split('\n'):
-                return 'this url has been occurpied...<a href="/">back home</a>'
-
-            
+                      
+            trans(url, new_url)
 
             model = open('model.html').read()
             model = model.replace('url', url)
@@ -49,5 +47,12 @@ def index():
             ###################print(request.path)
             return '<h1 style="color: red;">please verify</h1><br><a href="/">back home</a>'
 
+@app.errorhandler(404)
+def redirect():
+    page_url = get_page(request.path)
+    model = open('model.html').read()
+    model = model.replace('url', url)
+    return model
+                       
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 8080, debug = True)
