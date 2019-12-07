@@ -35,7 +35,7 @@ def index():
             if not all(ch in allow for ch in new_url):
                 return "New URL not allowed..."
                       
-            trans(url, new_url)
+            trans(request.remote_addr, url, new_url)
 
             model = open('model.html').read()
             model = model.replace('url', url)
@@ -50,9 +50,9 @@ def index():
 
 @app.errorhandler(404)
 def redirect():
-    page_url = get_page(request.path)
+    page = get_page(request.path)
     model = open('model.html').read()
-    model = model.replace('url', url)
+    model = model.replace('url', page)
     return model
                        
 if __name__ == '__main__':
