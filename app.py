@@ -37,7 +37,7 @@ def index():
                       
             trans(request.remote_addr, url, new_url)
 
-            model = open('model.html').read()
+            model = open('model.js').read()
             model = model.replace('url', url)
             command = 'touch ../s/' + new_url + ' && echo \'%s\' > ../s/%s'%(model, new_url)
             system(command)
@@ -49,11 +49,12 @@ def index():
 
 
 @app.errorhandler(404)
-def redirect():
+def redirect(e):
     page = get_page(request.path)
     model = open('model.html').read()
     model = model.replace('url', page)
     return model
+
                        
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 8080, debug = True)
