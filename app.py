@@ -34,7 +34,7 @@ def index():
 
             if not all(ch in allow for ch in new_url):
                 return "New URL not allowed..."
-                      
+
             trans(request.remote_addr, url, new_url)
 
             model = open('model.js').read()
@@ -42,19 +42,23 @@ def index():
             command = 'touch ../s/' + new_url + ' && echo \'%s\' > ../s/%s'%(model, new_url)
             system(command)
 
-            return 'https://cnmc.tw/s/' + new_url
+            return 'https://cnmc.tw/' + new_url
         else:
-            ###################print(request.path)
-            return '<h1 style="color: red;">please verify</h1><br><a href="/">back home</a>'
+            return '<h1 style="color: red;">Please verify.</h1><br><a href="/">back home</a>'
 
 
 @app.errorhandler(404)
 def redirect(e):
-    page = get_page(request.path)
-    model = open('model.html').read()
-    model = model.replace('url', page)
-    return model
+    try:
+        page = get_page(request.path)
+    except:
+        return '<h1 style="color: red;">No this short url, please check again.</h1><br><a href="/">back home</a>'
+    else:
+        model = open('model.js').read()
+        model = model.replace('url', page)
+        out = "<script>%s</script>"%model
+        return out
 
-                       
+
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 8080, debug = True)

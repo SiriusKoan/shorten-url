@@ -1,5 +1,9 @@
 import sqlite3 as sql
 
+def check(url, new_url):
+    con = sql.connect("short.db")
+    cur = con.cursor()
+    #if 
 def trans(ip, url, new_url):
     con = sql.connect("short.db")
     cur = con.cursor()
@@ -10,7 +14,7 @@ def trans(ip, url, new_url):
 def get_page(url):
     con = sql.connect('short.db')
     cur = con.cursor()
-    cur.execute('SELECT * FROM short WHERE old="%s"'%url)
+    cur.execute('SELECT old FROM short WHERE new="%s"'%(url[1:]))
     new = cur.fetchall()
     con.close()
-    return new[0][3]    # new_url
+    return new[0][0]    # new_url
