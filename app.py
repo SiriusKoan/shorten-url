@@ -33,7 +33,7 @@ def index():
             new_url = request.form.get('new-url')
 
             if not all(ch in allow for ch in new_url):
-                return "New URL not allowed..."
+                return render_template("char-forbidden.html")
 
             trans(request.remote_addr, url, new_url)
 
@@ -44,7 +44,7 @@ def index():
 
             return 'https://cnmc.tw/' + new_url
         else:
-            return '<h1 style="color: red;">Please verify.</h1><br><a href="/">back home</a>'
+            return render_template("verify-error.html")
 
 
 @app.errorhandler(404)
@@ -52,7 +52,7 @@ def redirect(e):
     try:
         page = get_page(request.path)
     except:
-        return '<h1 style="color: red;">No this short url, please check again.</h1><br><a href="/">back home</a>'
+        return render_template("404.html")
     else:
         model = open('model.js').read()
         model = model.replace('url', page)
