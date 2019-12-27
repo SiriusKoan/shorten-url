@@ -1,0 +1,12 @@
+#main_title {
+    font-family: 'Ubuntu';
+    font-size: 50px;
+}
+
+.warning {
+    color: red;
+    font-family: 'Courier Prime';
+}
+.tips {
+    font-size: 20px;
+}

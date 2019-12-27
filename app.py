@@ -32,17 +32,14 @@ def index():
             url = request.form.get('url')
             new_url = request.form.get('new-url')
 
-            if not all(ch in allow for ch in new_url):
+            if not (all(ch in allow for ch in new_url) and new_url != ""):
                 return render_template("char-forbidden.html")
+            if new_url in ["new", "old", "who", "id"]:
+                return render_template("string-forbidden.html")
 
             trans(request.remote_addr, url, new_url)
 
-            model = open('model.js').read()
-            model = model.replace('url', url)
-            command = 'touch ../s/' + new_url + ' && echo \'%s\' > ../s/%s'%(model, new_url)
-            system(command)
-
-            return 'https://cnmc.tw/' + new_url
+            return "<script>alert('https://cnmc.tw/%s')</script>"%new_url
         else:
             return render_template("verify-error.html")
 
@@ -54,9 +51,9 @@ def redirect(e):
     except:
         return render_template("404.html")
     else:
-        model = open('model.js').read()
-        model = model.replace('url', page)
-        out = "<script>%s</script>"%model
+        model = "window.location.replace('url')"
+        out = model.replace('url', page)
+        out = "<script>%s</script>"%out
         return out
 
 

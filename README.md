@@ -1,5 +1,5 @@
 # shorten-url
-<img src="https://img.shields.io/badge/status-security problem-red"></img>
+<img src="https://img.shields.io/badge/testing problem-red"></img>
 ## setup
 1. Create a database named short.db.
 ```sh

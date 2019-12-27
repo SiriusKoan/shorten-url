@@ -5,7 +5,7 @@ def check(new_url):
     cur = con.cursor()
     cur.execute("SELECT old from short where new=(url) VALUES (?)", (new_url))
     check = cur.fetchall()
-    if check != [('')]: #
+    if check != [('')]:
         return "This short url has been occupied..."
     
 def trans(ip, url, new_url):
