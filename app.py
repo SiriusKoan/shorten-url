@@ -4,17 +4,16 @@ from os import system, popen
 from flask_recaptcha import ReCaptcha
 from models import *
 from string import ascii_letters, digits
+import config
 
 
 app = Flask(__name__)
 CORS(app)
 
-public_key = "6Lc7UMUUAAAAAEVWlNxm5SNF7kaiixUZAVBoyNVc"
-private_key = "6Lc7UMUUAAAAALl0APCC9dCjzKKOz0Cgys1K91q1"
 app.config.update(dict(
     RECAPTCHA_ENABLED = True,
-    RECAPTCHA_SITE_KEY = public_key,
-    RECAPTCHA_SECRET_KEY = private_key,
+    RECAPTCHA_SITE_KEY = config.public_key,
+    RECAPTCHA_SECRET_KEY = config.private_key,
 ))
 
 recaptcha = ReCaptcha()
@@ -26,7 +25,7 @@ allow = ascii_letters + digits + '_-\\'
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        return render_template('index.html', path = '')
+        return render_template('index.html')
     elif request.method == 'POST':
         if recaptcha.verify():
             url = request.form.get('url')
@@ -36,6 +35,9 @@ def index():
                 return render_template("char-forbidden.html")
             if new_url in ["new", "old", "who", "id"]:
                 return render_template("string-forbidden.html")
+            
+            if not check(new_url):
+                return "This short url has been occupied..."
 
             trans(request.remote_addr, url, new_url)
 
@@ -44,17 +46,6 @@ def index():
             return render_template("verify-error.html")
 
 
-@app.errorhandler(404)
-def redirect(e):
-    try:
-        page = get_page(request.path)
-    except:
-        return render_template("404.html")
-    else:
-        model = "window.location.replace('url')"
-        out = model.replace('url', page)
-        out = "<script>%s</script>"%out
-        return out
 
 
 if __name__ == '__main__':
