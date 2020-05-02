@@ -15,11 +15,18 @@
 		</div>
 		<div>
 			<span class="tips"><b>Custom Short Link: </b></span>
-			<span class="tips">https://cnmc.tw/</span>
+			<span class="tips">{{ server_name }}</span>
 			<input type="text" name="new-url">
 		</div>
 		{{ recaptcha }}
 		<input type="submit" value="submit">
+		<div>
+			<h3>Rule:</h3>
+			<ul>
+				<li>You can use alpha, '0123456789' and '-_'</li>
+				<li>You can't use 'new', 'old', 'who', 'id', 'time' as short suffix</li>
+			</ul>
+		</div>
 	</form>
 </body>
 </html>

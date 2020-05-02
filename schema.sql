@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS short;
-CREATE TABLE short (
+DROP TABLE IF EXISTS urls;
+CREATE TABLE urls (
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
-    time    DATETIME    NOT NULL,
+    insert_time    DATETIME    NOT NULL,
     who     BINARY  NOT NULL,
     old     TEXT    NOT NULL,
     new     TEXT    NOT NULL

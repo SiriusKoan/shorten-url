@@ -1,4 +1,3 @@
 .vscode/*
-.num.txt
-short.db
-__pycache__/
+data.db
+__pycache__/*

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile: {{ username }}</title>
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+</head>
+<body>
+    {% if login == username %}
+    <h1>Hello {{ username }}!</h1>
+    <p>This is your profile.</p>
+    <a href="../logout"><button class="normal-page">Logout</button></a>
+    <a href="/"><button class="normal-page">Home Page</button></a>
+    <a href="/set-password"><button class="normal-page">Change Password</button></a>
+    {% else %}
+    <h1>{{ username }}</h1>
+    <a href="/user/{{ login }}">Your Profile</a>
+    <a href="/"><button class="normal-page">Home Page</button></a>
+    {% endif %}    
+</body>
+</html>
