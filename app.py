@@ -6,9 +6,11 @@ from models import *
 from string import ascii_letters, digits
 import config
 import datetime
+from oauthlib.oauth2 import WebApplicationClient
 
 
 app = Flask(__name__)
+
 CORS(app)
 
 app.config.update(dict(
@@ -16,11 +18,13 @@ app.config.update(dict(
     RECAPTCHA_SITE_KEY = config.recaptcha_public_key,
     RECAPTCHA_SECRET_KEY = config.recaptcha_private_key,
 ))
-
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
 
+google_client = WebApplicationClient(config.google_client_id)
+
 allow = ascii_letters + digits + '_-'
+print(allow)
 
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -29,28 +33,29 @@ def index():
         return render_template('index.html')
     elif request.method == 'POST':
         if recaptcha.verify():
-            url = request.form.get('url')
+            old_url = request.form.get('url')
             new_url = request.form.get('new-url')
 
-            if not (all(ch in allow for ch in new_url) and new_url != ""):
-                return 'Error', 400
-            if new_url in ["new", "old", "who", "id"]:
-                return 'Error', 400
-            if not check(new_url):
-                return "This short url has been occupied..."
-
-            save(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), request.remote_addr, url, new_url)
-
-            return "<script>alert('https://cnmc.tw/%s');window.location.replace('/');</script>"% new_url
+            if check(new_url):
+                save(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), request.remote_addr, old_url, new_url)
+                return "<script>alert('https://cnmc.tw/%s');window.location.replace('/');</script>"% new_url
+            return 'Error', 400
         else:
             return 'Error', 400
 
 
 @app.route('/api', methods = ['POST'])
 def api():
-    payload = request.get_json()
-    old_url = payload['old_url']
-    new_url = payload['new_url']
+    try:
+        payload = request.get_json()
+        old_url = payload['old_url']
+        new_url = payload['new_url']
+        key = payload['key']
+        save(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), request.remote_addr, old_url, new_url)
+        return '%s => %s'%(old_url, new_url)
+    except:
+        return 'Error', 400
+    
 
 @app.errorhandler(404)
 def redirect(e):
