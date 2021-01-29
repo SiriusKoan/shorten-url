@@ -1,3 +1,8 @@
 .vscode/*
-data.db
 __pycache__/*
+data.db
+shorten-url-virenv/*
+url_tools.py
+user_tools.py
+schema.sql
+static/img/background.jpg
