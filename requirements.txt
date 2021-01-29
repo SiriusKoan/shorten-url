@@ -3,4 +3,3 @@ flask_cors
 flask-login
 flask_recaptcha
 flask_sqlalchemy
-flask-bcrypt
