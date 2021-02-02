@@ -119,7 +119,6 @@ def index():
         """
         return render_template("index.html", server_name=config.server_name)
     if request.method == "POST":
-        print(current_user)
         if recaptcha.verify():
             old = request.form.get("old")
             new = request.form.get("new")
@@ -129,7 +128,7 @@ def index():
             ):
                 new_url = URLs(
                     insert_time=datetime.datetime.now(),
-                    username= "anonymous"
+                    username="anonymous"
                     if current_user.is_anonymous
                     else current_user.get_id(),
                     from_ip=request.remote_addr,
@@ -161,20 +160,16 @@ def login_page():
         if request.method == "GET":
             return render_template("login.html")
         if request.method == "POST":
-            if recaptcha.verify():
-                username = request.form["username"]
-                password = request.form["password"]
-                if login_auth(username, password):
-                    user = User()
-                    user.id = username
-                    login_user(user)
-                    flash("Login as %s!" % username, category="success")
-                    return redirect(url_for("index"))
-                flash("Login failed.", category="alert")
-                return redirect(url_for("login_page"))
-            else:
-                flash("Please click 'I am not a robot.'", category="alert")
+            username = request.form["username"]
+            password = request.form["password"]
+            if login_auth(username, password):
+                user = User()
+                user.id = username
+                login_user(user)
+                flash("Login as %s!" % username, category="success")
                 return redirect(url_for("index"))
+            flash("Login failed.", category="alert")
+            return redirect(url_for("login_page"))
     else:
         flash("You have logined. Redirect to home page.", category="info")
         return redirect(url_for("index"))
@@ -187,42 +182,37 @@ def logout_page():
     flash("Logout.", category="info")
     return redirect(url_for("index"))
 
+
 # TODO
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
     pass
 
 
-# TODO
 @app.route("/api", methods=["POST"])
 def api():
-    try:
-        payload = request.get_json()
-        old_url = payload["old_url"]
-        new_url = payload["new_url"]
-        key = payload["key"]
-        username = get_username(key)
-        save(
-            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            username,
-            request.remote_addr,
-            old_url,
-            new_url,
-        )
-        return "%s => %s" % (old_url, new_url)
-    except:
-        return "Error", 400
+    payload = request.get_json()
+    old = payload["old"]
+    new = payload["new"]
+    api_key = payload["api_key"]
 
-
-@app.route("/user/<username>")
-def profile_page(username):
-    if current_user.is_active:
-        # TODO show profile
-        pass
-        return "meow"
+    user = db.session.query(Users).filter_by(api_key=api_key).first()
+    if user is None:
+        abort(401)
     else:
-        flash("You have not logined. Login to view the profile.", category="alert")
-        return redirect(url_for("login_page"))
+        new_url = URLs(
+            insert_time=datetime.datetime.now(),
+            username=user.username,
+            from_ip=request.remote_addr,
+            old=old,
+            new=new,
+        )
+        db.session.add(new_url)
+        db.session.commit()
+        return ""
+
+
+
 
 # TODO
 @app.route("/dashboard", methods=["GET"])
