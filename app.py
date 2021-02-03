@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, abort, flash
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -13,82 +12,17 @@ from flask_recaptcha import ReCaptcha
 from re import fullmatch
 import config
 import datetime
-from user_tools import *
+from user_tools import login_auth, register
+from url_tools import add_url
+from database import db, URLs, Users
 
 
 app = Flask(__name__)
-app.config.update(
-    dict(
-        DEBUG=True,
-        SECRET_KEY="4v6945t2mj7terntv48tvnqn4otaei",
-        ENV="development",
-        RECAPTCHA_ENABLED=True,
-        RECAPTCHA_SITE_KEY=config.recaptcha_public_key,
-        RECAPTCHA_SECRET_KEY=config.recaptcha_private_key,
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SQLALCHEMY_DATABASE_URI="sqlite:///data.db",
-    )
-)
-
+app.config.from_object(config.Config)
 CORS(app)
 recaptcha = ReCaptcha(app)
 login_manager = LoginManager(app)
-db = SQLAlchemy(app)
-
-
-# SQLAlchemy
-class Users(db.Model):
-    __tablename__ = "users"
-    ID = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.Text, unique=True, nullable=False)
-    password = db.Column(db.Text, nullable=False)
-    email = db.Column(db.Text, unique=True, nullable=False)
-    verify_code = db.Column(db.Text, unique=True, nullable=True)
-    api_key = db.Column(db.Text, unique=True, nullable=False)
-
-    def __init__(self, username, password, email, verify_code, api_key):
-        self.username = username
-        self.password = password
-        self.email = email
-        self.verify_code = verify_code
-        self.api_key = api_key
-
-
-class URLs(db.Model):
-    __tablename__ = "urls"
-    ID = db.Column(db.Integer, primary_key=True)
-    insert_time = db.Column(db.DateTime, nullable=False)
-    from_ip = db.Column(db.Text, nullable=False)
-    username = db.Column(db.Text, nullable=False)
-    old = db.Column(db.Text, nullable=False)
-    new = db.Column(db.Text, unique=True, nullable=False)
-
-    def __init__(self, insert_time, from_ip, username, old, new):
-        self.insert_time = insert_time
-        self.from_ip = from_ip
-        self.username = username
-        self.old = old
-        self.new = new
-
-
-# Exception
-class UsernameNotExists(Exception):
-    def __init__(self):
-        self.category = "error"
-        self.message = 'No this user...<br>You can <a href="/register">register</a> it or check your username and login again.'
-
-    def __str__(self):
-        return self.category + "+" + self.message
-
-
-class WrongPassword(Exception):
-    def __init__(self):
-        self.category = "error"
-        self.message = "Authenticate failed..."
-
-    def __str__(self):
-        return self.category + "+" + self.message
-
+db.init_app(app)
 
 # User
 class User(UserMixin):
@@ -106,38 +40,16 @@ def user_loader(username):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        """
-        db.drop_all()
-        db.create_all()
-
-        u = Users(username='a', api_key='a')
-        db.session.add(u)
-        db.session.commit()
-        p = URLs(insert_time=datetime.datetime.now(), from_ip='127.0.0.1', username='user', old='https://google.com', new='meow')
-        db.session.add(p)
-        db.session.commit()
-        """
         return render_template("index.html", server_name=config.server_name)
     if request.method == "POST":
         if recaptcha.verify():
             old = request.form.get("old")
             new = request.form.get("new")
-            if (
-                fullmatch("[a-zA-Z0-9_-]+", new)
-                and db.session.query(URLs).filter_by(new=new).first() is None
-            ):
-                new_url = URLs(
-                    insert_time=datetime.datetime.now(),
-                    username="anonymous"
-                    if current_user.is_anonymous
-                    else current_user.get_id(),
-                    from_ip=request.remote_addr,
-                    old=old,
-                    new=new,
-                )
-                db.session.add(new_url)
-                db.session.commit()
-
+            username = (
+                "anonymous" if current_user.is_anonymous else current_user.get_id()
+            )
+            from_ip = request.remote_addr
+            if add_url(old, new, username, from_ip):
                 new_url = config.server_name + new
                 flash(
                     'New url: <a href="%s" target="_blank">%s</a>' % (new_url, new_url),
@@ -146,7 +58,8 @@ def index():
                 return redirect(url_for("index"))
             else:
                 flash(
-                    "Bad characters or the new url has been occupied.", category="alert"
+                    "Bad characters or the new url has been occupied.",
+                    category="alert",
                 )
                 return redirect(url_for("index"))
 
@@ -168,25 +81,55 @@ def login_page():
                 login_user(user)
                 flash("Login as %s!" % username, category="success")
                 return redirect(url_for("index"))
-            flash("Login failed.", category="alert")
-            return redirect(url_for("login_page"))
+            else:
+                flash("Login failed.", category="alert")
+                return redirect(url_for("login_page"))
     else:
         flash("You have logined. Redirect to home page.", category="info")
         return redirect(url_for("index"))
 
 
 @app.route("/logout", methods=["GET"])
-@login_required
 def logout_page():
-    logout_user()
-    flash("Logout.", category="info")
-    return redirect(url_for("index"))
+    # TODO notice
+    if current_user.is_active:
+        logout_user()
+        flash("Logout.", category="info")
+        return redirect(url_for("index"))
+    else:
+        flash("You have not logined.", category="info")
+        return redirect(url_for("login_page"))
 
 
-# TODO
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
-    pass
+    if not current_user.is_active:
+        if request.method == "GET":
+            return render_template("register.html")
+        if request.method == "POST":
+            if recaptcha.verify():
+                username = request.form["username"]
+                password = request.form["password"]
+                email = request.form["email"]
+                if register(username, password, email):
+                    flash(
+                        "Register successfully! You can login now.",
+                        category="success",
+                    )
+                    return redirect(url_for("login_page"))
+                else:
+                    flash(
+                        "Bad characters or the username has been occupied.",
+                        category="alert",
+                    )
+                    return redirect(url_for("index"))
+
+            else:
+                flash("Please click 'I am not a robot.'", category="alert")
+                return redirect(url_for("register_page"))
+    else:
+        flash("You have logined. Redirect to home page.", category="info")
+        return redirect(url_for("index"))
 
 
 @app.route("/api", methods=["POST"])
@@ -196,22 +139,14 @@ def api():
     new = payload["new"]
     api_key = payload["api_key"]
 
-    user = db.session.query(Users).filter_by(api_key=api_key).first()
+    user = Users.query.filter_by(api_key=api_key).first()
     if user is None:
         abort(401)
     else:
-        new_url = URLs(
-            insert_time=datetime.datetime.now(),
-            username=user.username,
-            from_ip=request.remote_addr,
-            old=old,
-            new=new,
-        )
-        db.session.add(new_url)
-        db.session.commit()
-        return ""
-
-
+        if add_url(old, new, user.username, request.remote_addr):
+            return ""
+        else:
+            abort(400)
 
 
 # TODO
@@ -231,10 +166,10 @@ def test_page():
 
 @app.errorhandler(404)
 def redirect_page(e):
-    to_url = db.session.query(URLs).filter_by(new=request.path[1:]).first()
+    to_url = URLs.query.filter_by(new=request.path[1:]).first()
     if to_url:
         return redirect(to_url.old)
-    return redirect(url_for("index"))
+    return redirect(url_for("index"))  # TODO customize 404 page
 
 
 if __name__ == "__main__":

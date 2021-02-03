@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+
+<body>
+    <div>
+        <a href="/"><img src="/static/img/human.png" alt="human"></a>
+    </div>
+    <form action="register" method="POST">
+        <div>
+            <!-- TODO beautify -->
+            <label for="username"><b class="normal">Username:</b></label>
+            <input type='text' name='username' id='username' placeholder='Username' required>
+            <label for="password"><b class="normal">Password:</b></label>
+            <input type='password' name='password' id='password' placeholder='Password' required>
+            <label for="email"><b class="normal">Email:</b></label>
+            <input type="email" name="email" id="email" placeholder="Email" required>
+            <input type='submit' name='submit' value="Register" class="submit-btn">
+            <p>have an account? <a href="login">Login</a></p>
+            {{ recaptcha }}
+        </div>
+    </form>
+    <div>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash-message {{ category }}">
+            <span class="closebtn" onclick="hide(this.parentElement)">&times;</span>
+            <span>{{ message | safe }}</span>
+            <!--TODO XSS test-->
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+
+</html>

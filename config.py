@@ -1,4 +1,12 @@
-server_name = 'http://127.0.0.1:8080/'
+server_name = "http://127.0.0.1:8080/"
 
-recaptcha_public_key = ""
-recaptcha_private_key = ""
+
+class Config:
+    DEBUG = True
+    SECRET_KEY = "85vn76t45gf578h478hf"
+    ENV = "development"
+    RECAPTCHA_ENABLED = True
+    RECAPTCHA_SITE_KEY = ""
+    RECAPTCHA_SECRET_KEY = ""
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = "sqlite:///data.db"
