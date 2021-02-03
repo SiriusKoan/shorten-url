@@ -2,11 +2,12 @@ from hashlib import sha256
 from database import db, Users
 from re import fullmatch
 from random import sample
+from url_tools import get_urls_by
 
 
 def login_auth(username, password):
     hash_password = sha256(bytes(password.encode("utf-8"))).hexdigest()
-    user = db.session.query(Users).filter_by(username=username).first()
+    user = Users.query.filter_by(username=username).first()
     if user:
         return hash_password == user.password
     return False
@@ -36,3 +37,6 @@ def generate_api_key(username):
     ingredient = sample(ingredient, 40)[:20]
     ingredient = sample(ingredient, 1)[0].join(ingredient)
     return ingredient
+
+    
+    

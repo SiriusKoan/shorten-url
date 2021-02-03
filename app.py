@@ -13,7 +13,7 @@ from re import fullmatch
 import config
 import datetime
 from user_tools import login_auth, register
-from url_tools import add_url
+from url_tools import add_url, get_urls_by
 from database import db, URLs, Users
 
 
@@ -149,19 +149,15 @@ def api():
             abort(400)
 
 
-# TODO
 @app.route("/dashboard", methods=["GET"])
+@login_required
 def dashboard_page():
-    pass
-
-
-"""
-@app.route("/test", methods=["GET", "POST"])
-def test_page():
-    test_url = db.session.query(URLs).filter_by(new="aaaa").first()
-    print(test_url)
-    return str(test_url)
-"""
+    username = current_user.get_id()
+    user = Users.query.filter_by(username=username).first()
+    profile = {"username": username, "email": user.email, "api_key": user.api_key}
+    urls = get_urls_by(username)
+    return render_template("dashboard.html", profile=profile, urls=urls)
+    
 
 
 @app.errorhandler(404)

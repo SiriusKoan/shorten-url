@@ -20,3 +20,9 @@ def add_url(old, new, username, from_ip):
         return True
     else:
         return False
+    
+def get_urls_by(username):
+    urls = URLs.query.filter_by(username=username).all()
+    urls = [[url.insert_time.strftime("%Y/%m/%d"), url.from_ip, url.old, url.new] for url in urls]
+    return urls
+    

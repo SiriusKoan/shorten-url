@@ -3,27 +3,21 @@
     font-size: 50px;
 }
 
-.warning {
-    color: red;
-    font-family: 'Courier Prime';
-}
-
-.tips {
-    font-size: 20px;
-}
-
 .flash-message {
     color: white;
     transition: 0.3s;
     padding: 20px;
     margin: 10px;
 }
+
 .alert {
     background-color: #f44336;
 }
+
 .info {
     background-color: #2196F3;
 }
+
 .success {
     background-color: #4CAF50;
 }
@@ -43,6 +37,26 @@
     color: black;
 }
 
+.parent {
+    width: 100%;
+}
+
+.left {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 5px;
+    min-height: 200px;
+}
+
+.right {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 5px;
+    min-height: 200px;
+}
+
 input[value="text"] {
     background: #fff;
     color: #525865;
@@ -58,12 +72,32 @@ input[value="text"] {
     -moz-transition: .18s ease-out;
     -o-transition: .18s ease-out;
     transition: .18s ease-out;
-  }
-  input[value="text"]:hover {
+}
+
+input[value="text"]:hover {
     box-shadow: inset 1px 2px 8px rgba(13, 142, 194, 0.07);
-  }
-  input[value="text"]:focus {
-    color:rgb(13, 142, 194);
+}
+
+input[value="text"]:focus {
+    color: rgb(13, 142, 194);
     border: 1px solid rgb(13, 142, 194);
     box-shadow: inset 1px 2px 4px rgba(13, 142, 194, 0.07), 0px 0px 8px rgba(13, 142, 194, 0.07);
-  }
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}

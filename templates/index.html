@@ -19,13 +19,8 @@
 			document.execCommand("copy");
 			copy_button.innerText = 'Copied';
 		}
-		function hide(obj) {
-			obj.style.opacity = "0";
-			setTimeout(() => {
-				obj.style.display = "none";
-			}, 300);
-		}
 	</script>
+	<script src="{{ url_for('static', filename = 'msg.js') }}"></script>
 </head>
 
 <body>
