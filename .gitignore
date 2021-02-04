@@ -3,4 +3,3 @@ __pycache__/*
 data.db
 shorten-url-virenv/*
 static/img/background.jpg
-templates/base.html

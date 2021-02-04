@@ -1,41 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/static/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu&amp;display=swap" rel="stylesheet">
-</head>
-<body>
+{% block head_title %}Login{% endblock head_title %}
+{% block content %}
+<div>
+    <a href="/"><img src="/static/img/human.png" alt="human"></a>
+</div>
+<form action='login' method='POST'>
     <div>
-        <div>
-            <a href="/"><img src="/static/img/human.png" alt="human"></a>
-        </div>
-        <form action='login' method='POST'>
-            <div>
-                <!-- TODO beautify -->
-                <label for="username"><b class="normal">Username:</b></label>
-                <input type='text' name='username' id='username' placeholder='Username' required>
-                <label for="password"><b class="normal">Password:</b></label>
-                <input type='password' name='password' id='password' placeholder='Password' required>
-                <input type='submit' name='submit' value="Login" class="submit-btn">
-                <p>or <a href="register">Register</a></p>
-            </div>
-        </form>
+        <!-- TODO beautify -->
+        <label for="username"><b class="normal">Username:</b></label>
+        <input type='text' name='username' id='username' placeholder='Username' required>
+        <label for="password"><b class="normal">Password:</b></label>
+        <input type='password' name='password' id='password' placeholder='Password' required>
+        <input type='submit' name='submit' value="Login" class="submit-btn">
+        <p>or <a href="register">Register</a></p>
     </div>
-    <div>
-        {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="flash-message {{ category }}">
-            <span class="closebtn" onclick="hide(this.parentElement)">&times;</span>
-            <span>{{ message | safe }}</span>
-            <!--TODO XSS test-->
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-    </div>
-</body>
-</html>
+</form>
+{% endblock content %}

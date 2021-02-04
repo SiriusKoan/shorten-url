@@ -91,7 +91,6 @@ def login_page():
 
 @app.route("/logout", methods=["GET"])
 def logout_page():
-    # TODO notice
     if current_user.is_active:
         logout_user()
         flash("Logout.", category="info")

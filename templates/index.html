@@ -1,62 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<!-- TODO base-->
-<head>
-	<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>shorten-url</title>
-	<script>
-		function copy_function() {
-			var new_url = document.getElementById('new');
-			var server_name = document.getElementById("server_name");
-			var copy_button = document.getElementById('copy-button');
-			new_url.addEventListener("copy", function (event) {
-				event.preventDefault();
-				event.clipboardData.setData("text/plain", server_name.innerText.concat(new_url.value));
-			})
-			document.execCommand("copy");
-			copy_button.innerText = 'Copied';
-		}
-	</script>
-	<script src="{{ url_for('static', filename = 'msg.js') }}"></script>
-</head>
+{% extends "base.html" %}
+{% block head_title %}Shorten URL{% endblock head_title%}
+{% block extra_script %}
+<script>
+	function copy_function() {
+		var new_url = document.getElementById('new');
+		var server_name = document.getElementById("server_name");
+		var copy_button = document.getElementById('copy-button');
+		new_url.addEventListener("copy", function (event) {
+			event.preventDefault();
+			event.clipboardData.setData("text/plain", server_name.innerText.concat(new_url.value));
+		})
+		document.execCommand("copy");
+		copy_button.innerText = 'Copied';
+	}
+</script>
+<script src="{{ url_for('static', filename = 'msg.js') }}"></script>
+{% endblock extra_script %}
 
-<body>
-	<h1 id="main_title">Shorten URL</h1>
-	<form action="/" method="post">
-		<div>
-			<span class="tips">Your URL: </span>
-			<input type="text" name="old" placeholder="https://" required>
-		</div>
-		<div>
-			<span class="tips"><b>Custom Short Link: </b></span>
-			<i><span class="tips" id="server_name">{{ server_name }}</span></i>
-			<input type="text" name="new" id="new" required>
-			<button onclick="copy_function();" id="copy-button" type="button">Copy</button>
-		</div>
-		{{ recaptcha }}
-		<input type="submit" value="submit">
-	</form>
+{% block title %}Shorten URL{% endblock title %}
+{% block content%}
+<form action="/" method="post">
 	<div>
-		<h3>Rule:</h3>
-		<ul>
-			<li>Alpha, '0123456789' and '-_' are allowed</li>
-		</ul>
+		<span class="tips">Your URL: </span>
+		<input type="text" name="old" placeholder="https://" required>
 	</div>
 	<div>
-		{% with messages = get_flashed_messages(with_categories=True) %}
-		{% if messages %}
-		{% for category, message in messages %}
-		<div class="flash-message {{ category }}">
-			<span class="closebtn" onclick="hide(this.parentElement)">&times;</span>
-			<span>{{ message | safe }}</span> <!--TODO XSS test-->
-		</div>
-		{% endfor %}
-		{% endif %}
-		{% endwith %}
+		<span class="tips"><b>Custom Short Link: </b></span>
+		<i><span class="tips" id="server_name">{{ server_name }}</span></i>
+		<input type="text" name="new" id="new" required>
+		<button onclick="copy_function();" id="copy-button" type="button">Copy</button>
 	</div>
-</body>
-
-</html>
+	{{ recaptcha }}
+	<input type="submit" value="submit">
+</form>
+<div>
+	<h3>Rule:</h3>
+	<ul>
+		<li>Alpha, '0123456789' and '-_' are allowed</li>
+	</ul>
+</div>
+{% endblock content%}

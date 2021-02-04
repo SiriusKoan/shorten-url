@@ -1,45 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
-</head>
-
-<body>
-    <div class="parent">
-        <div id="profile" class="left">
-            <span><b>Username: </b></span>
-            <p id="username">{{ profile["username"] }}</p>
-            <span><b>Email: </b></span>
-            <p id="email">{{ profile["email"] }}</p>
-            <span><b>API key: </b></span>
-            <pre><p id="api_key">{{ profile["api_key"] }}</p></pre>
-        </div>
-        <div class="right">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>From IP</th>
-                        <th>Old</th>
-                        <th>New</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for url in urls %}
-                    <tr>
-                        {% for info in url %}
-                        <td>{{ info }}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+{% extends "base.html" %}
+{% block head_title%}Dashboard{% endblock head_title%}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+<div class="parent">
+    <div id="profile" class="left">
+        <span><b>Username: </b></span>
+        <p id="username">{{ profile["username"] }}</p>
+        <span><b>Email: </b></span>
+        <p id="email">{{ profile["email"] }}</p>
+        <span><b>API key: </b></span>
+        <pre><p id="api_key">{{ profile["api_key"] }}</p></pre>
     </div>
-</body>
-
-</html>
+    <div class="right">
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>From IP</th>
+                    <th>Old</th>
+                    <th>New</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for url in urls %}
+                <tr>
+                    {% for info in url %}
+                    <td>{{ info }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
