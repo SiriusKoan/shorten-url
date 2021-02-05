@@ -28,6 +28,7 @@ class URLs(db.Model):
     username = db.Column(db.Text, nullable=False)
     old = db.Column(db.Text, nullable=False)
     new = db.Column(db.Text, unique=True, nullable=False)
+    use = db.Column(db.Integer, nullable=False, default=0)
 
     def __init__(self, insert_time, from_ip, username, old, new):
         self.insert_time = insert_time

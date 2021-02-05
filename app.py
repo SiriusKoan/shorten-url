@@ -163,6 +163,8 @@ def dashboard_page():
 def redirect_page(e):
     to_url = URLs.query.filter_by(new=request.path[1:]).first()
     if to_url:
+        to_url.use = URLs.use + 1
+        db.session.commit()
         return redirect(to_url.old)
     return redirect(url_for("index"))  # TODO customize 404 page
 
