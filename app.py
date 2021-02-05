@@ -13,7 +13,7 @@ from re import fullmatch
 import config
 import datetime
 from user_tools import login_auth, register
-from url_tools import add_url, get_urls_by
+from url_tools import add_url, get_urls_info
 from database import db, URLs, Users
 
 
@@ -154,8 +154,8 @@ def dashboard_page():
     username = current_user.get_id()
     user = Users.query.filter_by(username=username).first()
     profile = {"username": username, "email": user.email, "api_key": user.api_key}
-    urls = get_urls_by(username)
-    return render_template("dashboard.html", profile=profile, urls=urls)
+    urls, graph = get_urls_info(username)
+    return render_template("dashboard.html", profile=profile, urls=urls, graph=graph)
     
 
 

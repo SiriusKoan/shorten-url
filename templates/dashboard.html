@@ -32,6 +32,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div id="graph">
+            <embed type="image/svg+xml" src={{ graph | safe }} />
+        </div>
     </div>
 </div>
 {% endblock content %}

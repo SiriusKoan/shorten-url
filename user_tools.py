@@ -2,7 +2,6 @@ from hashlib import sha256
 from database import db, Users
 from re import fullmatch
 from random import sample
-from url_tools import get_urls_by
 
 
 def login_auth(username, password):
