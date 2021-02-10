@@ -1,8 +1,7 @@
+{% extends "base.html" %}
 {% block head_title %}Login{% endblock head_title %}
+{% block title %}Login{% endblock title %}
 {% block content %}
-<div>
-    <a href="/"><img src="/static/img/human.png" alt="human"></a>
-</div>
 <form action='login' method='POST'>
     <div>
         <!-- TODO beautify -->
@@ -11,7 +10,7 @@
         <label for="password"><b class="normal">Password:</b></label>
         <input type='password' name='password' id='password' placeholder='Password' required>
         <input type='submit' name='submit' value="Login" class="submit-btn">
-        <p>or <a href="register">Register</a></p>
     </div>
 </form>
+<p>or <a href="register">Register</a></p>
 {% endblock content %}

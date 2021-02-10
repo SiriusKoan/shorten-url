@@ -10,6 +10,7 @@ from flask_login import (
 )
 from flask_recaptcha import ReCaptcha
 from re import fullmatch
+from os import listdir
 import config
 import datetime
 from user_tools import login_auth, register
@@ -24,9 +25,8 @@ recaptcha = ReCaptcha(app)
 login_manager = LoginManager(app)
 db.init_app(app)
 
-# User
+
 class User(UserMixin):
-    # define basic user
     pass
 
 
@@ -35,6 +35,11 @@ def user_loader(username):
     user = User()
     user.id = username  # use username as user id
     return user
+
+@app.before_first_request
+def check_db():
+    if 'data.db' not in listdir():
+        db.create_all()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -58,7 +63,7 @@ def index():
                 return redirect(url_for("index"))
             else:
                 flash(
-                    "Bad characters or the new url has been occupied.",
+                    "Bad characters or the new url has been used.",
                     category="alert",
                 )
                 return redirect(url_for("index"))
@@ -118,10 +123,10 @@ def register_page():
                     return redirect(url_for("login_page"))
                 else:
                     flash(
-                        "Bad characters or the username has been occupied.",
+                        "Bad characters or the username has been used.",
                         category="alert",
                     )
-                    return redirect(url_for("index"))
+                    return redirect(url_for("register_page"))
 
             else:
                 flash("Please click 'I am not a robot.'", category="alert")
@@ -153,10 +158,11 @@ def api():
 def dashboard_page():
     username = current_user.get_id()
     user = Users.query.filter_by(username=username).first()
-    profile = {"username": username, "email": user.email, "api_key": user.api_key}
+    profile = {"username": username,
+               "email": user.email,
+               "api_key": user.api_key,}
     urls, graph = get_urls_info(username)
     return render_template("dashboard.html", profile=profile, urls=urls, graph=graph)
-    
 
 
 @app.errorhandler(404)
@@ -167,6 +173,12 @@ def redirect_page(e):
         db.session.commit()
         return redirect(to_url.old)
     return redirect(url_for("index"))  # TODO customize 404 page
+
+
+@app.errorhandler(401)
+def unauthorized_page(e):
+    flash("You have to login first.", category="alert")
+    return redirect(url_for("login_page"))
 
 
 if __name__ == "__main__":
