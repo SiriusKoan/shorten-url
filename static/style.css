@@ -1,44 +1,11 @@
 #title {
-    font-family: 'Ubuntu';
+    font-family: 'Ubuntu', sans-serif;
     font-size: 50px;
     text-align: center;
-    -webkit-filter: drop-shadow(5px 5px 3px rgb(58, 112, 114));
-    filter: drop-shadow(5px 5px 3px rgb(58, 112, 114));
     margin: 1em;
-}
-
-.flash-message {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     color: white;
-    transition: 0.3s;
-    padding: 20px;
-    margin: 10px;
-}
-
-.alert {
-    background-color: #f44336;
-}
-
-.info {
-    background-color: #2196F3;
-}
-
-.success {
-    background-color: #4CAF50;
-}
-
-.closebtn {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.closebtn:hover {
-    color: black;
+    font-style: italic;
 }
 
 .parent {
@@ -77,11 +44,29 @@
     }
 }
 
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40em
+}
+
+@media only screen and (max-width: 600px) {
+    .center {
+        width: 20em;
+    }
+}
+
+
 .link {
     color: rgb(12, 22, 21);
 }
 
-input[value="text"] {
+label {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+input[type="text"] {
     background: #fff;
     color: #525865;
     border-radius: 4px;
@@ -91,21 +76,30 @@ input[value="text"] {
     font-size: 1em;
     line-height: 1.45;
     outline: none;
-    padding: 0.6em 1.45em 0.7em;
+    padding-left: 1em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
     -webkit-transition: .18s ease-out;
     -moz-transition: .18s ease-out;
     -o-transition: .18s ease-out;
     transition: .18s ease-out;
 }
 
-input[value="text"]:hover {
+input[type="text"]:hover {
     box-shadow: inset 1px 2px 8px rgba(13, 142, 194, 0.07);
 }
 
-input[value="text"]:focus {
-    color: rgb(13, 142, 194);
+input[type="text"]:focus {
+    color: rgb(0, 0, 0);
     border: 1px solid rgb(13, 142, 194);
     box-shadow: inset 1px 2px 4px rgba(13, 142, 194, 0.07), 0px 0px 8px rgba(13, 142, 194, 0.07);
+}
+
+input[type="submit"] {
+    border-color: rgba(13, 142, 194, 0.07);
+    width: 9em;
+    height: 4em;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 tr:hover {

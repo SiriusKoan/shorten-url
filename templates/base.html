@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block head_title%}{% endblock head_title%}</title>
+    <title>{% block head_title %}{% endblock head_title %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'messages.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100&family=Ubuntu:wght@300&display=swap" rel="stylesheet">
     {% block extra_import %}{% endblock extra_import %}
     {% block extra_script %}{% endblock extra_script %}
 </head>
 
-<body>
+<body id="{% block page_name %}{% endblock page_name %}">
     <div id="title">{% block title %}{% endblock title %}</div>
     <div id="content">
         {% block content %}{% endblock content %}

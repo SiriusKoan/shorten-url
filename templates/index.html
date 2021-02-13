@@ -17,26 +17,29 @@
 <script src="{{ url_for('static', filename = 'msg.js') }}"></script>
 {% endblock extra_script %}
 
+{% block page_name %}index{% endblock page_name %}
 {% block title %}Shorten URL{% endblock title %}
-{% block content%}
-<form action="/" method="post">
+{% block content %}
+<div class="center">
+	<form action="/" method="post">
+		<div>
+			<label for="old">Long URL: </label>
+			<input type="text" name="old" placeholder="https://" required>
+		</div>
+		<div style="margin-bottom: 10px; margin-top: 10px;">
+			<label for="new">Custom Short Link: </label>
+			<i><span id="server_name">{{ server_name }}</span></i>
+			<input type="text" name="new" id="new" required>
+			<button onclick="copy_function();" id="copy-button" type="button">Copy</button>
+		</div>
+		{{ recaptcha }}
+		<input type="submit" value="submit">
+	</form>
 	<div>
-		<span class="tips">Your URL: </span>
-		<input type="text" name="old" placeholder="https://" required>
+		<h3>Rule:</h3>
+		<ul>
+			<li>Alpha, '0123456789' and '-_' are allowed</li>
+		</ul>
 	</div>
-	<div>
-		<span class="tips"><b>Custom Short Link: </b></span>
-		<i><span class="tips" id="server_name">{{ server_name }}</span></i>
-		<input type="text" name="new" id="new" required>
-		<button onclick="copy_function();" id="copy-button" type="button">Copy</button>
-	</div>
-	{{ recaptcha }}
-	<input type="submit" value="submit">
-</form>
-<div>
-	<h3>Rule:</h3>
-	<ul>
-		<li>Alpha, '0123456789' and '-_' are allowed</li>
-	</ul>
 </div>
-{% endblock content%}
+{% endblock content %}
