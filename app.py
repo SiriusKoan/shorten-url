@@ -45,7 +45,7 @@ def check_db():
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html", server_name=config.server_name)
+        return render_template("index.html", server_name=config.server_name, not_login=current_user.is_anonymous)
     if request.method == "POST":
         if recaptcha.verify():
             old = request.form.get("old")

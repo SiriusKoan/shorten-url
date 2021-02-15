@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block head_title %}Dashboard{% endblock head_title %}
+{% block extra_import %}<link rel="stylesheet" href="{{ url_for('static', filename = 'dashboard.css') }}">{% endblock extra_import %}
 
 {% block page_name %}dashboard{% endblock page_name %}
 {% block title %}Dashboard{% endblock title %}

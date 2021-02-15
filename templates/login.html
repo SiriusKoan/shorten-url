@@ -6,13 +6,17 @@
 {% block content %}
 <form action='login' method='POST'>
     <div>
-        <!-- TODO beautify -->
-        <label for="username"><b class="normal">Username:</b></label>
-        <input type='text' name='username' id='username' placeholder='Username' required>
-        <label for="password"><b class="normal">Password:</b></label>
-        <input type='password' name='password' id='password' placeholder='Password' required>
+        <div class="field">
+            <label for="username"><b class="normal">Username:</b></label>
+            <input type='text' name='username' id='username' placeholder='Username' required>
+        </div>
+        <div class="field">
+            <label for="password"><b class="normal">Password:</b></label>
+            <input type='password' name='password' id='password' placeholder='Password' required>
+        </div>
         <input type='submit' name='submit' value="Login" class="submit-btn">
     </div>
 </form>
-<p>or <a href="register">Register</a></p>
+<p>or <a href="/register" class="link">Register</a></p>
+<p><a href="/" class="link">Home Page</a></p>
 {% endblock content %}

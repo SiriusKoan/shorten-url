@@ -8,56 +8,6 @@
     font-style: italic;
 }
 
-.parent {
-    width: 100%;
-}
-
-.left {
-    float: left;
-    width: 50%;
-    box-sizing: border-box;
-    padding: 5px;
-    min-height: 200px;
-}
-
-.right {
-    float: left;
-    width: 50%;
-    box-sizing: border-box;
-    padding: 5px;
-    min-height: 200px;
-}
-
-@media only screen and (max-width: 500px) {
-    .left {
-        width: 100%;
-    }
-    .right {
-        width: 100%;
-    }
-    .rwd-table {
-        display: block;
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        -ms-overflow-style: -ms-autohiding-scrollbar;
-    }
-}
-
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40em
-}
-
-@media only screen and (max-width: 600px) {
-    .center {
-        width: 20em;
-    }
-}
-
-
 .link {
     color: rgb(12, 22, 21);
 }
@@ -66,7 +16,7 @@ label {
     font-family: 'Ubuntu', sans-serif;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"], input[type="email"] {
     background: #fff;
     color: #525865;
     border-radius: 4px;
@@ -85,11 +35,11 @@ input[type="text"] {
     transition: .18s ease-out;
 }
 
-input[type="text"]:hover {
+input[type="text"]:hover, input[type="password"]:hover, input[type="email"]:hover {
     box-shadow: inset 1px 2px 8px rgba(13, 142, 194, 0.07);
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
     color: rgb(0, 0, 0);
     border: 1px solid rgb(13, 142, 194);
     box-shadow: inset 1px 2px 4px rgba(13, 142, 194, 0.07), 0px 0px 8px rgba(13, 142, 194, 0.07);
@@ -102,21 +52,3 @@ input[type="submit"] {
     font-family: 'Ubuntu', sans-serif;
 }
 
-tr:hover {
-    background-color: #ddd;
-}
-
-th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-    min-width: 3em;
-}
-
-td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}

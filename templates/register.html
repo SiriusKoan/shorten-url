@@ -6,16 +6,22 @@
 {% block content %}
 <form action="register" method="POST">
     <div>
-        <!-- TODO beautify -->
-        <label for="username"><b class="normal">Username:</b></label>
-        <input type='text' name='username' id='username' placeholder='Username' required>
-        <label for="password"><b class="normal">Password:</b></label>
-        <input type='password' name='password' id='password' placeholder='Password' required>
-        <label for="email"><b class="normal">Email:</b></label>
-        <input type="email" name="email" id="email" placeholder="Email" required>
+        <div class="field">
+            <label for="username"><b class="normal">Username:</b></label>
+            <input type='text' name='username' id='username' placeholder='Username' required>
+        </div>
+        <div class="field">
+            <label for="password"><b class="normal">Password:</b></label>
+            <input type='password' name='password' id='password' placeholder='Password' required>
+        </div>
+        <div class="field">
+            <label for="email"><b class="normal">Email:</b></label>
+            <input type="email" name="email" id="email" placeholder="Email" required>
+        </div>
+        <div class="field">{{ recaptcha }}</div>
         <input type='submit' name='submit' value="Register" class="submit-btn">
-        <p>have an account? <a href="login">Login</a></p>
-        {{ recaptcha }}
     </div>
 </form>
+<p>have an account? <a href="/login" class="link">Login</a></p>
+<p><a href="/" class="link">Home Page</a></p>
 {% endblock content%}

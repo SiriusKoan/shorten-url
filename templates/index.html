@@ -14,32 +14,38 @@
 		copy_button.innerText = 'Copied';
 	}
 </script>
-<script src="{{ url_for('static', filename = 'msg.js') }}"></script>
 {% endblock extra_script %}
 
 {% block page_name %}index{% endblock page_name %}
 {% block title %}Shorten URL{% endblock title %}
 {% block content %}
-<div class="center">
+<div>
 	<form action="/" method="post">
-		<div>
+		<div class="field">
 			<label for="old">Long URL: </label>
 			<input type="text" name="old" placeholder="https://" required>
 		</div>
-		<div style="margin-bottom: 10px; margin-top: 10px;">
+		<div class="field">
 			<label for="new">Custom Short Link: </label>
 			<i><span id="server_name">{{ server_name }}</span></i>
 			<input type="text" name="new" id="new" required>
 			<button onclick="copy_function();" id="copy-button" type="button">Copy</button>
 		</div>
-		{{ recaptcha }}
+		<div class="field">{{ recaptcha }}</div>
 		<input type="submit" value="submit">
 	</form>
 	<div>
-		<h3>Rule:</h3>
-		<ul>
-			<li>Alpha, '0123456789' and '-_' are allowed</li>
-		</ul>
+		<p style="font-family: 'Ubuntu', sans-serif;"><b>Rule: </b>Letters, numbers and '-_' are allowed</p>
+	</div>
+	<br>
+	<div>
+		{% if not_login %}
+		<p><a href="login" class="link">Login</a></p>
+		<p><a href="register" class="link">Register</a></p>
+		{% else %}
+		<p><a href="logout" class="link">Logout</a></p>
+		<p><a href="dashboard" class="link">Dashboard</a></p>
+		{% endif %}
 	</div>
 </div>
 {% endblock content %}

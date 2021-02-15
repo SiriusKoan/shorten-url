@@ -1,0 +1,36 @@
+#index {
+    background-color: rgba(0, 200, 255, 0.11);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40em
+}
+
+#login {
+    background-color: rgba(0, 200, 255, 0.11);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25em
+}
+
+#register {
+    background-color: rgba(0, 200, 255, 0.11);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25em
+}
+
+#dashboard {
+    background-color: rgba(0, 200, 255, 0.11);
+}
+
+@media only screen and (max-width: 600px) {
+    #index {
+        width: 20em;
+    }
+    #login {
+        width: 20em;
+    }
+}

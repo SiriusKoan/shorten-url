@@ -7,8 +7,10 @@
     <title>{% block head_title %}{% endblock head_title %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename = 'messages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'page.css') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100&family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename = 'msg.js') }}"></script>
     {% block extra_import %}{% endblock extra_import %}
     {% block extra_script %}{% endblock extra_script %}
 </head>
@@ -16,19 +18,20 @@
 <body id="{% block page_name %}{% endblock page_name %}">
     <div id="title">{% block title %}{% endblock title %}</div>
     <div id="content">
-        {% block content %}{% endblock content %}
-    </div>
-    <div>
-        {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="flash-message {{ category }}">
-            <span class="closebtn" onclick="hide(this.parentElement)">&times;</span>
-            <span>{{ message | safe }}</span>
+        {% block content %}
+        {% endblock content %}
+        <div>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                <span class="closebtn" onclick="hide(this.parentElement)">&times;</span>
+                <span>{{ message | safe }}</span>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
         </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
     </div>
 </body>
 

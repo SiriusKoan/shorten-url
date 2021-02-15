@@ -1,0 +1,59 @@
+tr:hover {
+    background-color: #ddd;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    min-width: 3em;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.parent {
+    width: 100%;
+}
+
+.left {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 5px;
+    min-height: 200px;
+}
+
+.right {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 5px;
+    min-height: 200px;
+}
+
+.field {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+@media only screen and (max-width: 800px) {
+    .left {
+        width: 100%;
+    }
+    .right {
+        width: 100%;
+    }
+    .rwd-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+}
